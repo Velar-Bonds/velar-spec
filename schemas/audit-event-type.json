@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://velar.dev/schemas/audit-event-type.json",
+  "title": "AuditEventType",
+  "type": "string",
+  "enum": [
+    "bond_emitido",
+    "bond_asignado",
+    "transfer_solicitada",
+    "transfer_aceptada",
+    "escrow_bloqueado",
+    "pago_registrado",
+    "pago_validado",
+    "token_liberado",
+    "transfer_rechazada",
+    "transfer_cancelada",
+    "bond_congelado",
+    "bond_descongelado",
+    "bond_cancelado",
+    "documento_subido",
+    "party_created",
+    "wallet_provisioned",
+    "bond_published",
+    "counter_offer_sent"
+  ]
+}

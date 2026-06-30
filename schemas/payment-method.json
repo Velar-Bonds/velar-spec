@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://velar.dev/schemas/payment-method.json",
+  "title": "PaymentMethod",
+  "description": "Método de pago elegido al publicar un bono o al crear una oferta de compra.",
+  "type": "string",
+  "enum": ["sinpe", "transferencia", "wallet"],
+  "x-velar-version": "1.0.0",
+  "x-velar-notes": {
+    "sinpe": "P2P off-chain — SINPE Móvil (Costa Rica)",
+    "transferencia": "P2P off-chain — transferencia bancaria",
+    "wallet": "DvP atómico USDC on-chain vía Freighter (post-aceptación)"
+  }
+}

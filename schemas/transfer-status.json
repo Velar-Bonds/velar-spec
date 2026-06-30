@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://velar.dev/schemas/transfer-status.json",
+  "title": "TransferStatus",
+  "type": "string",
+  "enum": [
+    "solicitada",
+    "aceptada",
+    "contraoferta",
+    "en_escrow",
+    "pago_registrado",
+    "pago_validado",
+    "liberada",
+    "rechazada",
+    "cancelada"
+  ],
+  "x-velar-wallet-flow": {
+    "description": "Si payment_method=wallet, tras accept queda en aceptada hasta submit-wallet-payment-xdr",
+    "terminal": ["liberada", "rechazada", "cancelada"]
+  }
+}

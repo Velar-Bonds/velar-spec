@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://velar.dev/schemas/bond-status.json",
+  "title": "BondStatus",
+  "type": "string",
+  "enum": [
+    "emitido",
+    "pendiente",
+    "aprobado",
+    "activo",
+    "en_venta",
+    "en_escrow",
+    "transferido",
+    "cancelado",
+    "rechazado",
+    "congelado"
+  ],
+  "x-velar-non-transferable": ["en_escrow", "cancelado", "congelado", "pendiente", "rechazado"]
+}
