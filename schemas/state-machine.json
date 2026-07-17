@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://velar.dev/schemas/state-machine.json",
+  "title": "VelarStateMachines",
+  "description": "Transiciones legales de estado para bonos y transferencias en VELAR. Codifica el flujo de negocio documentado (v1). Fuente de verdad: docs/states.md y las reglas de negocio del monorepo.",
+  "x-velar-version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "bond": {
+      "title": "BondStateMachine",
+      "description": "Estados de bonds.status y sus transiciones permitidas. Ver bond-status.json para el enum.",
+      "type": "object",
+      "properties": {
+        "initial": { "const": "emitido" },
+        "terminal": {
+          "type": "array",
+          "items": { "type": "string" },
+          "const": ["transferido", "cancelado", "rechazado"]
+        },
+        "transitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "x-velar-transitions": {
+        "emitido": ["activo", "cancelado"],
+        "pendiente": ["aprobado", "rechazado"],
+        "aprobado": ["activo"],
+        "activo": ["en_venta", "en_escrow", "congelado", "cancelado"],
+        "en_venta": ["en_escrow", "activo", "congelado"],
+        "en_escrow": ["transferido", "activo", "congelado"],
+        "transferido": ["activo"],
+        "congelado": ["activo"],
+        "cancelado": [],
+        "rechazado": []
+      },
+      "x-velar-non-transferable": ["en_escrow", "cancelado", "congelado", "pendiente", "rechazado"]
+    },
+    "transfer": {
+      "title": "TransferStateMachine",
+      "description": "Estados de transfers.status y sus transiciones permitidas. Ver transfer-status.json para el enum.",
+      "type": "object",
+      "properties": {
+        "initial": { "const": "solicitada" },
+        "terminal": {
+          "type": "array",
+          "items": { "type": "string" },
+          "const": ["liberada", "rechazada", "cancelada"]
+        }
+      },
+      "x-velar-transitions": {
+        "solicitada": ["aceptada", "contraoferta", "rechazada", "cancelada"],
+        "contraoferta": ["aceptada", "rechazada", "cancelada"],
+        "aceptada": ["en_escrow", "liberada", "cancelada"],
+        "en_escrow": ["pago_registrado", "cancelada"],
+        "pago_registrado": ["pago_validado", "cancelada"],
+        "pago_validado": ["liberada"],
+        "liberada": [],
+        "rechazada": [],
+        "cancelada": []
+      },
+      "x-velar-flows": {
+        "p2p": {
+          "payment_method": ["sinpe", "transferencia"],
+          "path": "solicitada → aceptada → en_escrow → pago_registrado → pago_validado → liberada"
+        },
+        "wallet": {
+          "payment_method": ["wallet"],
+          "path": "solicitada → aceptada → [DvP atómico USDC+bono on-chain] → liberada",
+          "note": "No pasa por en_escrow off-chain."
+        }
+      }
+    }
+  }
+}
